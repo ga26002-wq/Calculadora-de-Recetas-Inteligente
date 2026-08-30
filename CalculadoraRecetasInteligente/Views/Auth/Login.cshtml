@@ -55,10 +55,10 @@
                 height: 100%;
             }
 
-            .login-left h1 {
-                font-weight: bold;
-                font-size: 3rem;
-            }
+                .login-left h1 {
+                    font-weight: bold;
+                    font-size: 3rem;
+                }
 
             .chef-icon {
                 font-size: 80px;
@@ -85,10 +85,10 @@
                 transition: 0.3s;
             }
 
-            .btn-login:hover {
-                background-color: #e66d00;
-                color: white;
-            }
+                .btn-login:hover {
+                    background-color: #e66d00;
+                    color: white;
+                }
 
             .input-group-text {
                 border-radius: 12px 0 0 12px;
@@ -111,6 +111,13 @@
 </head>
 
 <body>
+
+    @if (TempData["MensajeExito"] != null)
+    {
+        <div class="alert alert-success text-center m-3">
+            @TempData["MensajeExito"]
+        </div>
+    }
 
     <div class="login-container">
 
@@ -143,7 +150,6 @@
 
                 </div>
 
-
                 <!-- LADO DERECHO -->
                 <div class="col-md-6">
 
@@ -155,11 +161,20 @@
                             Inicia sesión para continuar.
                         </p>
 
-                        <form>
+                        <!-- Mensaje de error general -->
+                        <div asp-validation-summary="ModelOnly"
+                             class="text-danger mb-3">
+                        </div>
+
+                        <!-- FORMULARIO REAL -->
+                        <form asp-action="Login" method="post">
+
+                            @Html.AntiForgeryToken()
 
                             <div class="mb-3">
 
-                                <label class="form-label">
+                                <label asp-for="Correo"
+                                       class="form-label">
                                     Correo electrónico
                                 </label>
 
@@ -180,10 +195,10 @@
 
                             </div>
 
-
                             <div class="mb-4">
 
-                                <label class="form-label">
+                                <label asp-for="Contrasena"
+                                       class="form-label">
                                     Contraseña
                                 </label>
 
@@ -204,7 +219,6 @@
 
                             </div>
 
-
                             <button type="submit"
                                     class="btn btn-login">
 
@@ -220,7 +234,7 @@
                             <span class="text-muted">
                                 ¿No tienes una cuenta?
                             </span>
-                            
+
                             <a asp-controller="Auth"
                                asp-action="Registro"
                                class="text-decoration-none fw-bold">
@@ -228,7 +242,7 @@
                             </a>
 
                         </div>
-
+                        
                     </div>
 
                 </div>
@@ -238,6 +252,15 @@
         </div>
 
     </div>
+
+    <!-- Scripts para validaciones -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.20.0/dist/jquery.validate.min.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/jquery-validation-unobtrusive@4.0.0/dist/jquery.validate.unobtrusive.min.js"></script>
 
 </body>
 </html>

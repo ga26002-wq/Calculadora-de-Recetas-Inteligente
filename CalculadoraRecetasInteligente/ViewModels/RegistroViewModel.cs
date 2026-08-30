@@ -7,6 +7,9 @@ namespace CalculadoraRecetasInteligente.ViewModels
         [Required(ErrorMessage = "Ingrese su nombre")]
         public string Nombre { get; set; } = string.Empty;
 
+        [Required(ErrorMessage = "Ingrese su apellido")]
+        public string Apellido { get; set; } = string.Empty;
+
         [Required(ErrorMessage = "Ingrese su correo")]
         [EmailAddress(ErrorMessage = "Ingrese un correo válido")]
         public string Correo { get; set; } = string.Empty;
