@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using CalculadoraRecetasInteligente.ViewModels;
+using Microsoft.AspNetCore.Mvc;
 
 namespace CalculadoraRecetasInteligente.Controllers
 {
@@ -6,6 +7,12 @@ namespace CalculadoraRecetasInteligente.Controllers
     {
         [HttpGet]
         public IActionResult Login()
+        {
+            return View();
+        }
+
+        [HttpGet]
+        public IActionResult Registro()
         {
             return View();
         }
