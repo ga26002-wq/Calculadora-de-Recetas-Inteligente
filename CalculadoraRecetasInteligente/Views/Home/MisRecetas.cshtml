@@ -16,13 +16,11 @@
 
     <title>ChefIA - Mis Recetas</title>
 
-
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
           rel="stylesheet" />
 
     <link rel="stylesheet"
           href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-
 
     <style>
 
@@ -32,7 +30,6 @@
                 font-family: Arial, sans-serif;
                 background-color: #f5f6fa;
             }
-
 
             /* SIDEBAR */
 
@@ -47,7 +44,6 @@
                 padding: 25px 20px;
             }
 
-
             .logo {
                 display: flex;
                 align-items: center;
@@ -55,17 +51,14 @@
                 margin-bottom: 45px;
             }
 
-
             .logo-icon {
                 font-size: 38px;
             }
-
 
             .logo h2 {
                 margin: 0;
                 font-weight: bold;
             }
-
 
             .menu-item {
                 display: flex;
@@ -79,19 +72,16 @@
                 transition: 0.3s;
             }
 
-
                 .menu-item:hover {
                     background-color: rgba(255,255,255,0.20);
                     color: white;
                 }
-
 
                 .menu-item.active {
                     background-color: white;
                     color: #ff7a00;
                     font-weight: bold;
                 }
-
 
             .logout {
                 position: absolute;
@@ -100,14 +90,12 @@
                 right: 20px;
             }
 
-
             /* CONTENIDO */
 
             .main-content {
                 margin-left: 260px;
                 padding: 35px;
             }
-
 
             /* TOPBAR */
 
@@ -121,16 +109,6 @@
                 justify-content: space-between;
                 align-items: center;
             }
-
-
-            /* TITULO */
-
-            .page-title {
-                font-weight: bold;
-                color: #2f3b4c;
-                margin-bottom: 5px;
-            }
-
 
             /* BOTON CREAR */
 
@@ -147,12 +125,10 @@
                 gap: 8px;
             }
 
-
                 .btn-create:hover {
                     background-color: #e65c00;
                     color: white;
                 }
-
 
             /* BUSCADOR */
 
@@ -164,12 +140,10 @@
                 margin-bottom: 25px;
             }
 
-
             .search-input {
                 border-radius: 12px;
                 padding: 12px;
             }
-
 
             /* TARJETAS DE RECETAS */
 
@@ -183,12 +157,10 @@
                 border: none;
             }
 
-
                 .recipe-card:hover {
                     transform: translateY(-5px);
                     box-shadow: 0 12px 30px rgba(0,0,0,0.10);
                 }
-
 
             .recipe-badge {
                 display: inline-block;
@@ -201,18 +173,15 @@
                 margin-bottom: 15px;
             }
 
-
             .recipe-card h4 {
                 font-weight: bold;
                 color: #2f3b4c;
             }
 
-
             .recipe-description {
                 color: #777;
                 min-height: 48px;
             }
-
 
             .recipe-info {
                 border-top: 1px solid #eee;
@@ -223,10 +192,8 @@
                 color: #666;
             }
 
-
             .btn-view {
                 width: 100%;
-                margin-top: 20px;
                 padding: 10px;
                 border-radius: 10px;
                 border: 1px solid #ff7a00;
@@ -238,12 +205,10 @@
                 font-weight: bold;
             }
 
-
                 .btn-view:hover {
                     background-color: #ff7a00;
                     color: white;
                 }
-
 
             /* SIN RECETAS */
 
@@ -255,13 +220,20 @@
                 box-shadow: 0 5px 20px rgba(0,0,0,0.06);
             }
 
-
             .empty-icon {
                 font-size: 70px;
                 color: #ff7a00;
                 margin-bottom: 20px;
             }
 
+            /* SIN RESULTADOS DE BUSQUEDA */
+
+            #sinResultados {
+                display: none;
+                text-align: center;
+                padding: 30px;
+                color: #777;
+            }
 
             @@media (max-width: 768px) {
 
@@ -271,7 +243,6 @@
                     min-height: auto;
                 }
 
-
                 .logout {
                     position: relative;
                     bottom: auto;
@@ -280,12 +251,10 @@
                     margin-top: 20px;
                 }
 
-
                 .main-content {
                     margin-left: 0;
                     padding: 20px;
                 }
-
 
                 .topbar {
                     flex-direction: column;
@@ -298,14 +267,11 @@
 
 </head>
 
-
 <body>
-
 
     <!-- SIDEBAR -->
 
     <div class="sidebar">
-
 
         <div class="logo">
 
@@ -317,24 +283,20 @@
 
         </div>
 
-
         <a asp-controller="Home"
            asp-action="Index"
            class="menu-item">
 
             <i class="bi bi-house-door-fill"></i>
-
             Dashboard
 
         </a>
-
 
         <a asp-controller="Home"
            asp-action="MisRecetas"
            class="menu-item active">
 
             <i class="bi bi-journal-text"></i>
-
             Mis Recetas
 
         </a>
@@ -343,31 +305,25 @@
            class="menu-item">
 
             <i class="bi bi-basket"></i>
-
             Ingredientes
 
         </a>
-
 
         <a href="#"
            class="menu-item">
 
             <i class="bi bi-stars"></i>
-
             Ajuste Inteligente
 
         </a>
-
 
         <a href="#"
            class="menu-item">
 
             <i class="bi bi-person"></i>
-
             Mi Perfil
 
         </a>
-
 
         <div class="logout">
 
@@ -375,13 +331,11 @@
                class="menu-item">
 
                 <i class="bi bi-box-arrow-right"></i>
-
                 Cerrar sesión
 
             </a>
 
         </div>
-
 
     </div>
 
@@ -390,11 +344,10 @@
 
     <div class="main-content">
 
-
         <!-- TOPBAR -->
 
         <div class="topbar">
-
+            
             <div>
 
                 <h4 class="mb-0">
@@ -407,13 +360,11 @@
 
             </div>
 
-
             <a asp-controller="Home"
                asp-action="CrearReceta"
                class="btn-create">
 
                 <i class="bi bi-plus-circle"></i>
-
                 Crear receta
 
             </a>
@@ -434,6 +385,7 @@
                 </span>
 
                 <input type="text"
+                       id="buscadorRecetas"
                        class="form-control search-input"
                        placeholder="Buscar receta por nombre..." />
 
@@ -446,29 +398,26 @@
         @if (Model != null && Model.Any())
         {
 
-            <div class="row g-4">
+            <div class="row g-4" id="contenedorRecetas">
 
                 @foreach (var receta in Model)
                 {
 
-                    <div class="col-md-6 col-lg-4">
+                    <div class="col-md-6 col-lg-4 receta-item"
+                         data-nombre="@receta.Nombre.ToLower()">
 
                         <div class="recipe-card">
-
 
                             <div class="recipe-badge">
 
                                 <i class="bi bi-journal-text"></i>
-
                                 Receta
 
                             </div>
 
-
                             <h4>
                                 @receta.Nombre
                             </h4>
-
 
                             <p class="recipe-description">
 
@@ -478,22 +427,18 @@
 
                             </p>
 
-
                             <div class="recipe-info">
 
                                 <span>
 
                                     <i class="bi bi-people"></i>
-
                                     @receta.Porciones porciones
 
                                 </span>
 
-
                                 <span>
 
                                     <i class="bi bi-clock"></i>
-
                                     @receta.TiempoPreparacionMin min
 
                                 </span>
@@ -504,11 +449,11 @@
                             <div class="d-flex gap-2 mt-3">
 
                                 <!-- VER -->
+
                                 <a asp-controller="Home"
                                    asp-action="VerReceta"
                                    asp-route-id="@receta.RecetaId"
-                                   class="btn-view flex-fill"
-                                   style="margin-top: 0;">
+                                   class="btn-view flex-fill">
 
                                     <i class="bi bi-eye"></i>
                                     Ver
@@ -517,6 +462,7 @@
 
 
                                 <!-- EDITAR -->
+
                                 <a asp-controller="Home"
                                    asp-action="EditarReceta"
                                    asp-route-id="@receta.RecetaId"
@@ -527,8 +473,9 @@
 
                                 </a>
 
-                                
+
                                 <!-- ELIMINAR -->
+
                                 <button type="button"
                                         class="btn btn-danger flex-fill btn-eliminar"
                                         data-id="@receta.RecetaId">
@@ -540,12 +487,29 @@
 
                             </div>
 
-
                         </div>
 
                     </div>
 
                 }
+
+            </div>
+
+
+            <!-- MENSAJE SIN RESULTADOS -->
+
+            <div id="sinResultados">
+
+                <i class="bi bi-search"
+                   style="font-size: 40px; color: #ff7a00;"></i>
+
+                <h4 class="mt-3">
+                    No encontramos recetas
+                </h4>
+
+                <p>
+                    Intenta buscar con otro nombre.
+                </p>
 
             </div>
 
@@ -561,11 +525,9 @@
 
                 </div>
 
-
                 <h3>
                     Aún no tienes recetas
                 </h3>
-
 
                 <p class="text-muted">
 
@@ -574,13 +536,11 @@
 
                 </p>
 
-
                 <a asp-controller="Home"
                    asp-action="CrearReceta"
                    class="btn-create mt-3">
 
                     <i class="bi bi-plus-circle"></i>
-
                     Crear mi primera receta
 
                 </a>
@@ -588,7 +548,6 @@
             </div>
 
         }
-
 
     </div>
 
@@ -628,10 +587,15 @@
                     </h4>
 
                     <p class="text-muted">
+
                         ¿Estás seguro de que deseas eliminar esta receta?
+
                         <br />
+
                         Esta acción no se puede deshacer.
+
                     </p>
+
 
                     <form id="formEliminar"
                           asp-controller="Home"
@@ -644,6 +608,7 @@
                                id="recetaIdEliminar"
                                name="id" />
 
+
                         <div class="d-flex gap-2 justify-content-center mt-4">
 
                             <button type="button"
@@ -654,6 +619,7 @@
                                 Cancelar
 
                             </button>
+
 
                             <button type="submit"
                                     class="btn btn-danger"
@@ -677,7 +643,12 @@
     </div>
 
 
+    <!-- JAVASCRIPT BOOTSTRAP -->
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+
+    <!-- JAVASCRIPT ELIMINAR -->
 
     <script>
 
@@ -701,6 +672,63 @@
 
     </script>
 
+
+    <!-- JAVASCRIPT BUSCADOR -->
+
+    <script>
+
+            const buscador = document.getElementById('buscadorRecetas');
+
+            if (buscador) {
+
+                buscador.addEventListener('input', function() {
+
+                    const texto = this.value.toLowerCase().trim();
+
+                    const recetas = document.querySelectorAll('.receta-item');
+
+                    let resultados = 0;
+
+                    recetas.forEach(function(receta) {
+
+                        const nombre = receta.getAttribute('data-nombre');
+
+                        if (nombre.includes(texto)) {
+
+                            receta.style.display = '';
+
+                            resultados++;
+
+                        } else {
+
+                            receta.style.display = 'none';
+
+                        }
+
+                    });
+
+
+                    const sinResultados = document.getElementById('sinResultados');
+
+                    if (sinResultados) {
+
+                        if (resultados === 0 && texto !== '') {
+
+                            sinResultados.style.display = 'block';
+
+                        } else {
+
+                            sinResultados.style.display = 'none';
+
+                        }
+
+                    }
+
+                });
+
+            }
+
+    </script>
 
 </body>
 </html>
