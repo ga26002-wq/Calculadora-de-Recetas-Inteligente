@@ -1,37 +1,41 @@
+using CalculadoraRecetasInteligente.Data;
 using CalculadoraRecetasInteligente.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System.Diagnostics;
 
 namespace CalculadoraRecetasInteligente.Controllers
 {
     public class HomeController : Controller
     {
+        private readonly RecetasDbContext _context;
+
+        public HomeController(RecetasDbContext context)
+        {
+            _context = context;
+        }
+
         public IActionResult Index()
         {
-            // Verificamos si el usuario inició sesión
-            var usuarioId = HttpContext.Session.GetInt32("UsuarioId");
-
-            if (usuarioId == null)
-            {
-                return RedirectToAction("Login", "Auth");
-            }
-
-            // Enviamos el nombre del usuario a la vista
-            ViewBag.UsuarioNombre =
-                HttpContext.Session.GetString("UsuarioNombre");
-
             return View();
         }
-        
+
+        public async Task<IActionResult> MisRecetas()
+        {
+            var recetas = await _context.Recetas
+                .OrderByDescending(r => r.FechaCreacion)
+                .ToListAsync();
+
+            return View(recetas);
+        }
+
+        public IActionResult CrearReceta()
+        {
+            return View();
+        }
+
         public IActionResult Privacy()
         {
-            var usuarioId = HttpContext.Session.GetInt32("UsuarioId");
-
-            if (usuarioId == null)
-            {
-                return RedirectToAction("Login", "Auth");
-            }
-
             return View();
         }
 

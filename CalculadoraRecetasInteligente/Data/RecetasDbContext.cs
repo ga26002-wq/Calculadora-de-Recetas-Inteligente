@@ -13,5 +13,7 @@ namespace CalculadoraRecetasInteligente.Data
         public DbSet<Usuario> Usuarios { get; set; }
 
         public DbSet<Rol> Roles { get; set; }
+
+        public DbSet<Receta> Recetas { get; set; }
     }
 }
