@@ -1,0 +1,495 @@
+﻿@model CalculadoraRecetasInteligente.Models.Receta
+
+@{
+    ViewData["Title"] = "Ver Receta";
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+    <meta charset="utf-8" />
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0" />
+
+    <title>ChefIA - @Model.Nombre</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+          rel="stylesheet" />
+
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+    <style>
+
+            body {
+                margin: 0;
+                min-height: 100vh;
+                font-family: Arial, sans-serif;
+                background-color: #f5f6fa;
+            }
+
+            /* SIDEBAR */
+
+            .sidebar {
+                width: 260px;
+                min-height: 100vh;
+                position: fixed;
+                left: 0;
+                top: 0;
+                background: linear-gradient(180deg, #ff7a00, #e65c00);
+                color: white;
+                padding: 25px 20px;
+            }
+
+            .logo {
+                display: flex;
+                align-items: center;
+                gap: 12px;
+                margin-bottom: 45px;
+            }
+
+            .logo-icon {
+                font-size: 38px;
+            }
+
+            .logo h2 {
+                margin: 0;
+                font-weight: bold;
+            }
+
+            .menu-item {
+                display: flex;
+                align-items: center;
+                gap: 15px;
+                padding: 14px 15px;
+                margin-bottom: 8px;
+                border-radius: 12px;
+                color: white;
+                text-decoration: none;
+                transition: 0.3s;
+            }
+
+                .menu-item:hover {
+                    background-color: rgba(255,255,255,0.20);
+                    color: white;
+                }
+
+                .menu-item.active {
+                    background-color: white;
+                    color: #ff7a00;
+                    font-weight: bold;
+                }
+
+            .logout {
+                position: absolute;
+                bottom: 30px;
+                left: 20px;
+                right: 20px;
+            }
+
+            /* CONTENIDO */
+
+            .main-content {
+                margin-left: 260px;
+                padding: 35px;
+            }
+
+            /* TOPBAR */
+
+            .topbar {
+                background: white;
+                border-radius: 18px;
+                padding: 18px 25px;
+                margin-bottom: 30px;
+                box-shadow: 0 5px 20px rgba(0,0,0,0.06);
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+            }
+
+            /* RECETA */
+
+            .recipe-detail {
+                background: white;
+                border-radius: 22px;
+                padding: 40px;
+                box-shadow: 0 5px 20px rgba(0,0,0,0.06);
+            }
+
+            .recipe-icon {
+                width: 80px;
+                height: 80px;
+                border-radius: 20px;
+                background-color: #fff0e6;
+                color: #ff7a00;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 38px;
+                margin-bottom: 20px;
+            }
+
+            .recipe-title {
+                font-size: 2.5rem;
+                font-weight: bold;
+                color: #2f3b4c;
+            }
+
+            .recipe-description {
+                color: #777;
+                font-size: 1.1rem;
+                line-height: 1.7;
+            }
+
+            .info-card {
+                background-color: #fafafa;
+                border-radius: 15px;
+                padding: 20px;
+                text-align: center;
+            }
+
+            .info-icon {
+                font-size: 25px;
+                color: #ff7a00;
+                margin-bottom: 8px;
+            }
+
+            .info-title {
+                font-size: 13px;
+                color: #777;
+            }
+
+            .info-value {
+                font-size: 20px;
+                font-weight: bold;
+                color: #2f3b4c;
+            }
+
+            .btn-back {
+                background-color: #ff7a00;
+                color: white;
+                border: none;
+                border-radius: 10px;
+                padding: 12px 20px;
+                text-decoration: none;
+                font-weight: bold;
+                display: inline-flex;
+                align-items: center;
+                gap: 8px;
+            }
+
+                .btn-back:hover {
+                    background-color: #e65c00;
+                    color: white;
+                }
+
+            @@media (max-width: 768px) {
+
+                .sidebar {
+                    position: relative;
+                    width: 100%;
+                    min-height: auto;
+                }
+
+                .logout {
+                    position: relative;
+                    bottom: auto;
+                    left: auto;
+                    right: auto;
+                    margin-top: 20px;
+                }
+
+                .main-content {
+                    margin-left: 0;
+                    padding: 20px;
+                }
+
+                .topbar {
+                    flex-direction: column;
+                    align-items: flex-start;
+                    gap: 15px;
+                }
+
+                .recipe-title {
+                    font-size: 2rem;
+                }
+            }
+
+    </style>
+
+</head>
+
+<body>
+
+    <!-- SIDEBAR -->
+
+    <div class="sidebar">
+
+        <div class="logo">
+
+            <div class="logo-icon">
+                <i class="bi bi-robot"></i>
+            </div>
+
+            <h2>ChefIA</h2>
+
+        </div>
+
+        <a asp-controller="Home"
+           asp-action="Index"
+           class="menu-item">
+
+            <i class="bi bi-house-door-fill"></i>
+
+            Dashboard
+
+        </a>
+
+        <a asp-controller="Home"
+           asp-action="MisRecetas"
+           class="menu-item active">
+
+            <i class="bi bi-journal-text"></i>
+
+            Mis Recetas
+
+        </a>
+
+        <a href="#"
+           class="menu-item">
+
+            <i class="bi bi-basket"></i>
+
+            Ingredientes
+
+        </a>
+
+        <a href="#"
+           class="menu-item">
+
+            <i class="bi bi-stars"></i>
+
+            Ajuste Inteligente
+
+        </a>
+
+        <a href="#"
+           class="menu-item">
+
+            <i class="bi bi-person"></i>
+
+            Mi Perfil
+
+        </a>
+
+        <div class="logout">
+
+            <a href="#"
+               class="menu-item">
+
+                <i class="bi bi-box-arrow-right"></i>
+
+                Cerrar sesión
+
+            </a>
+
+        </div>
+
+    </div>
+
+
+    <!-- CONTENIDO -->
+
+    <div class="main-content">
+
+        <!-- TOPBAR -->
+
+        <div class="topbar">
+
+            <div>
+
+                <h4 class="mb-0">
+                    Detalle de receta
+                </h4>
+
+                <small class="text-muted">
+                    Consulta la información de tu receta
+                </small>
+
+            </div>
+
+            <a asp-controller="Home"
+               asp-action="MisRecetas"
+               class="btn-back">
+
+                <i class="bi bi-arrow-left"></i>
+
+                Volver a mis recetas
+
+            </a>
+
+        </div>
+
+
+        <!-- RECETA -->
+
+        <div class="recipe-detail">
+
+            <div class="recipe-icon">
+
+                <i class="bi bi-journal-text"></i>
+
+            </div>
+
+            <h1 class="recipe-title">
+                @Model.Nombre
+            </h1>
+
+            <p class="recipe-description mt-3">
+
+                @(string.IsNullOrEmpty(Model.Descripcion)
+                    ? "Esta receta no tiene una descripción."
+                    : Model.Descripcion)
+
+            </p>
+
+
+            <div class="row g-4 mt-4">
+
+                <div class="col-md-4">
+
+                    <div class="info-card">
+
+                        <div class="info-icon">
+                            <i class="bi bi-people"></i>
+                        </div>
+
+                        <div class="info-title">
+                            Porciones
+                        </div>
+
+                        <div class="info-value">
+                            @Model.Porciones
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <div class="col-md-4">
+
+                    <div class="info-card">
+
+                        <div class="info-icon">
+                            <i class="bi bi-clock"></i>
+                        </div>
+
+                        <div class="info-title">
+                            Preparación
+                        </div>
+
+                        <div class="info-value">
+                            @Model.TiempoPreparacionMin min
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <div class="col-md-4">
+
+                    <div class="info-card">
+
+                        <div class="info-icon">
+                            <i class="bi bi-fire"></i>
+                        </div>
+
+                        <div class="info-title">
+                            Cocción
+                        </div>
+
+                        <div class="info-value">
+                            @Model.TiempoCoccionMin min
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <hr class="my-5" />
+
+
+            <div class="row">
+
+                <div class="col-md-6">
+
+                    <small class="text-muted">
+                        Fecha de creación
+                    </small>
+
+                    <p class="fw-bold">
+                        @Model.FechaCreacion.ToString("dd/MM/yyyy HH:mm")
+                    </p>
+
+                </div>
+
+                <div class="col-md-6">
+
+                    <small class="text-muted">
+                        Última actualización
+                    </small>
+
+                    <p class="fw-bold">
+
+                        @(Model.FechaActualizacion.HasValue
+                            ? Model.FechaActualizacion.Value.ToString("dd/MM/yyyy HH:mm")
+                            : "Sin actualizaciones")
+
+                    </p>
+
+                </div>
+
+            </div>
+            
+
+            <div class="mt-4">
+
+                <a asp-controller="Home"
+                   asp-action="MisRecetas"
+                   class="btn-back">
+
+                    <i class="bi bi-arrow-left"></i>
+
+                    Volver a mis recetas
+
+                </a>
+
+                <a asp-controller="Home"
+                   asp-action="EditarReceta"
+                   asp-route-id="@Model.RecetaId"
+                   class="btn-back">
+
+                    <i class="bi bi-pencil-square"></i>
+
+                    Editar receta
+                    
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</body>
+
+</html>

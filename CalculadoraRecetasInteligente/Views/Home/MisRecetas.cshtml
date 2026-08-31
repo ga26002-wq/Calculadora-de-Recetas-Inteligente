@@ -501,12 +501,44 @@
                             </div>
 
 
-                            <a href="#"
-                               class="btn-view">
+                            <div class="d-flex gap-2 mt-3">
 
-                                Ver receta
+                                <!-- VER -->
+                                <a asp-controller="Home"
+                                   asp-action="VerReceta"
+                                   asp-route-id="@receta.RecetaId"
+                                   class="btn-view flex-fill"
+                                   style="margin-top: 0;">
 
-                            </a>
+                                    <i class="bi bi-eye"></i>
+                                    Ver
+
+                                </a>
+
+
+                                <!-- EDITAR -->
+                                <a asp-controller="Home"
+                                   asp-action="EditarReceta"
+                                   asp-route-id="@receta.RecetaId"
+                                   class="btn btn-warning flex-fill">
+
+                                    <i class="bi bi-pencil-square"></i>
+                                    Editar
+
+                                </a>
+
+                                
+                                <!-- ELIMINAR -->
+                                <button type="button"
+                                        class="btn btn-danger flex-fill btn-eliminar"
+                                        data-id="@receta.RecetaId">
+
+                                    <i class="bi bi-trash"></i>
+                                    Eliminar
+
+                                </button>
+
+                            </div>
 
 
                         </div>
@@ -559,6 +591,115 @@
 
 
     </div>
+
+
+    <!-- MODAL CONFIRMAR ELIMINACIÓN -->
+
+    <div class="modal fade"
+         id="modalEliminar"
+         tabindex="-1"
+         aria-hidden="true">
+
+        <div class="modal-dialog modal-dialog-centered">
+
+            <div class="modal-content"
+                 style="border-radius: 20px; border: none;">
+
+                <div class="modal-body text-center p-4">
+
+                    <div style="
+                        width: 70px;
+                        height: 70px;
+                        background: #fff0e6;
+                        color: #ff7a00;
+                        border-radius: 50%;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        margin: 0 auto 20px;
+                        font-size: 32px;">
+
+                        <i class="bi bi-trash"></i>
+
+                    </div>
+
+                    <h4 class="fw-bold">
+                        ¿Eliminar receta?
+                    </h4>
+
+                    <p class="text-muted">
+                        ¿Estás seguro de que deseas eliminar esta receta?
+                        <br />
+                        Esta acción no se puede deshacer.
+                    </p>
+
+                    <form id="formEliminar"
+                          asp-controller="Home"
+                          asp-action="EliminarReceta"
+                          method="post">
+
+                        @Html.AntiForgeryToken()
+
+                        <input type="hidden"
+                               id="recetaIdEliminar"
+                               name="id" />
+
+                        <div class="d-flex gap-2 justify-content-center mt-4">
+
+                            <button type="button"
+                                    class="btn btn-light"
+                                    data-bs-dismiss="modal"
+                                    style="border-radius: 10px; padding: 10px 20px;">
+
+                                Cancelar
+
+                            </button>
+
+                            <button type="submit"
+                                    class="btn btn-danger"
+                                    style="border-radius: 10px; padding: 10px 20px;">
+
+                                <i class="bi bi-trash"></i>
+                                Sí, eliminar
+
+                            </button>
+
+                        </div>
+
+                    </form>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+
+            document.querySelectorAll('.btn-eliminar').forEach(boton => {
+
+                boton.addEventListener('click', function() {
+
+                    const recetaId = this.getAttribute('data-id');
+
+                    document.getElementById('recetaIdEliminar').value = recetaId;
+
+                    const modal = new bootstrap.Modal(
+                        document.getElementById('modalEliminar')
+                    );
+
+                    modal.show();
+
+                });
+
+            });
+
+    </script>
 
 
 </body>

@@ -11,9 +11,18 @@ namespace CalculadoraRecetasInteligente.Data
         }
 
         public DbSet<Usuario> Usuarios { get; set; }
-
         public DbSet<Rol> Roles { get; set; }
-
         public DbSet<Receta> Recetas { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+                     
+            modelBuilder.Entity<Receta>()
+                .ToTable("Recetas", "recetas", t =>
+                {
+                    t.HasTrigger("tr_Recetas_RegistrarEliminados");
+                });
+        }
     }
 }
