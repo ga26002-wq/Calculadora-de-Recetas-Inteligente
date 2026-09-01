@@ -1,12 +1,13 @@
-﻿@model IEnumerable<CalculadoraRecetasInteligente.Models.Receta>
+﻿@model IEnumerable<CalculadoraRecetasInteligente.Models.Ingrediente>
 
 @{
-    ViewData["Title"] = "Mis Recetas";
+    ViewData["Title"] = "Ingredientes";
     Layout = null;
 }
 
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
 
     <meta charset="utf-8" />
@@ -14,7 +15,7 @@
     <meta name="viewport"
           content="width=device-width, initial-scale=1.0" />
 
-    <title>ChefIA - Mis Recetas</title>
+    <title>ChefIA - Ingredientes</title>
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
           rel="stylesheet" />
@@ -97,8 +98,6 @@
                 padding: 35px;
             }
 
-            /* TOPBAR */
-
             .topbar {
                 background: white;
                 border-radius: 18px;
@@ -110,8 +109,6 @@
                 align-items: center;
             }
 
-            /* BOTON CREAR */
-
             .btn-create {
                 background-color: #ff7a00;
                 color: white;
@@ -120,9 +117,6 @@
                 padding: 12px 20px;
                 text-decoration: none;
                 font-weight: bold;
-                display: inline-flex;
-                align-items: center;
-                gap: 8px;
             }
 
                 .btn-create:hover {
@@ -130,87 +124,45 @@
                     color: white;
                 }
 
-            /* BUSCADOR */
+            /* TARJETAS */
 
-            .search-card {
-                background: white;
-                padding: 20px;
-                border-radius: 18px;
-                box-shadow: 0 5px 20px rgba(0,0,0,0.06);
-                margin-bottom: 25px;
-            }
-
-            .search-input {
-                border-radius: 12px;
-                padding: 12px;
-            }
-
-            /* TARJETAS DE RECETAS */
-
-            .recipe-card {
+            .ingredient-card {
                 background: white;
                 border-radius: 18px;
-                padding: 25px;
+                padding: 22px;
                 height: 100%;
                 box-shadow: 0 5px 20px rgba(0,0,0,0.06);
                 transition: 0.3s;
-                border: none;
             }
 
-                .recipe-card:hover {
+                .ingredient-card:hover {
                     transform: translateY(-5px);
                     box-shadow: 0 12px 30px rgba(0,0,0,0.10);
                 }
 
-            .recipe-badge {
-                display: inline-block;
-                background-color: #fff0e6;
+            .ingredient-icon {
+                width: 55px;
+                height: 55px;
+                border-radius: 15px;
+                background: #fff0e6;
                 color: #ff7a00;
-                padding: 6px 12px;
-                border-radius: 20px;
-                font-size: 13px;
-                font-weight: bold;
-                margin-bottom: 15px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 25px;
+                margin-bottom: 18px;
             }
 
-            .recipe-card h4 {
+            .ingredient-name {
+                font-size: 20px;
                 font-weight: bold;
                 color: #2f3b4c;
             }
 
-            .recipe-description {
+            .ingredient-info {
                 color: #777;
-                min-height: 48px;
+                margin-top: 8px;
             }
-
-            .recipe-info {
-                border-top: 1px solid #eee;
-                padding-top: 15px;
-                margin-top: 15px;
-                display: flex;
-                justify-content: space-between;
-                color: #666;
-            }
-
-            .btn-view {
-                width: 100%;
-                padding: 10px;
-                border-radius: 10px;
-                border: 1px solid #ff7a00;
-                color: #ff7a00;
-                background: white;
-                text-decoration: none;
-                display: inline-block;
-                text-align: center;
-                font-weight: bold;
-            }
-
-                .btn-view:hover {
-                    background-color: #ff7a00;
-                    color: white;
-                }
-
-            /* SIN RECETAS */
 
             .empty-card {
                 background: white;
@@ -224,15 +176,6 @@
                 font-size: 70px;
                 color: #ff7a00;
                 margin-bottom: 20px;
-            }
-
-            /* SIN RESULTADOS DE BUSQUEDA */
-
-            #sinResultados {
-                display: none;
-                text-align: center;
-                padding: 30px;
-                color: #777;
             }
 
             @@media (max-width: 768px) {
@@ -294,7 +237,7 @@
 
         <a asp-controller="Home"
            asp-action="MisRecetas"
-           class="menu-item active">
+           class="menu-item">
 
             <i class="bi bi-journal-text"></i>
             Mis Recetas
@@ -303,10 +246,9 @@
 
         <a asp-controller="Home"
            asp-action="Ingredientes"
-           class="menu-item">
+           class="menu-item active">
 
             <i class="bi bi-basket"></i>
-
             Ingredientes
 
         </a>
@@ -342,132 +284,68 @@
     </div>
 
 
-    <!-- CONTENIDO PRINCIPAL -->
+    <!-- CONTENIDO -->
 
     <div class="main-content">
 
-        <!-- TOPBAR -->
-
         <div class="topbar">
-            
+
             <div>
 
                 <h4 class="mb-0">
-                    Mis Recetas
+                    Ingredientes
                 </h4>
 
                 <small class="text-muted">
-                    Administra y organiza tus recetas guardadas
+                    Administra los ingredientes de tus recetas
                 </small>
 
             </div>
 
             <a asp-controller="Home"
-               asp-action="CrearReceta"
+               asp-action="CrearIngrediente"
                class="btn-create">
 
                 <i class="bi bi-plus-circle"></i>
-                Crear receta
+                Agregar ingrediente
 
             </a>
 
         </div>
 
 
-        <!-- BUSCADOR -->
-
-        <div class="search-card">
-
-            <div class="input-group">
-
-                <span class="input-group-text bg-white">
-
-                    <i class="bi bi-search"></i>
-
-                </span>
-
-                <input type="text"
-                       id="buscadorRecetas"
-                       class="form-control search-input"
-                       placeholder="Buscar receta por nombre..." />
-
-            </div>
-
-        </div>
-
-
-        <!-- RECETAS -->
         @if (Model != null && Model.Any())
         {
+            <div class="row g-4">
 
-            <div class="row g-4" id="contenedorRecetas">
-
-                @foreach (var receta in Model)
+                @foreach (var ingrediente in Model)
                 {
+                    <div class="col-md-6 col-lg-4">
 
-                    <div class="col-md-6 col-lg-4 receta-item"
-                         data-nombre="@receta.Nombre.ToLower()">
+                        <div class="ingredient-card">
 
-                        <div class="recipe-card">
+                            <div class="ingredient-icon">
+                                <i class="bi bi-basket"></i>
+                            </div>
 
-                            <div class="recipe-badge">
+                            <div class="ingredient-name">
+                                @ingrediente.Nombre
+                            </div>
 
-                                <i class="bi bi-journal-text"></i>
-                                Receta
+                            <div class="ingredient-info">
+
+                                <i class="bi bi-box-seam"></i>
+
+                                @ingrediente.Cantidad
+                                @ingrediente.UnidadMedida
 
                             </div>
 
-                            <h4>
-                                @receta.Nombre
-                            </h4>
-
-                            <p class="recipe-description">
-
-                                @(string.IsNullOrEmpty(receta.Descripcion)
-                                    ? "Sin descripción disponible."
-                                    : receta.Descripcion)
-
-                            </p>
-
-                            <div class="recipe-info">
-
-                                <span>
-
-                                    <i class="bi bi-people"></i>
-                                    @receta.Porciones porciones
-
-                                </span>
-
-                                <span>
-
-                                    <i class="bi bi-clock"></i>
-                                    @receta.TiempoPreparacionMin min
-
-                                </span>
-
-                            </div>
-
-
-                            <div class="d-flex gap-2 mt-3">
-
-                                <!-- VER -->
+                            <div class="d-flex gap-2 mt-4">
 
                                 <a asp-controller="Home"
-                                   asp-action="VerReceta"
-                                   asp-route-id="@receta.RecetaId"
-                                   class="btn-view flex-fill">
-
-                                    <i class="bi bi-eye"></i>
-                                    Ver
-
-                                </a>
-
-
-                                <!-- EDITAR -->
-
-                                <a asp-controller="Home"
-                                   asp-action="EditarReceta"
-                                   asp-route-id="@receta.RecetaId"
+                                   asp-action="EditarIngrediente"
+                                   asp-route-id="@ingrediente.IngredienteId"
                                    class="btn btn-warning flex-fill">
 
                                     <i class="bi bi-pencil-square"></i>
@@ -475,12 +353,9 @@
 
                                 </a>
 
-
-                                <!-- ELIMINAR -->
-
                                 <button type="button"
                                         class="btn btn-danger flex-fill btn-eliminar"
-                                        data-id="@receta.RecetaId">
+                                        data-id="@ingrediente.IngredienteId">
 
                                     <i class="bi bi-trash"></i>
                                     Eliminar
@@ -492,69 +367,41 @@
                         </div>
 
                     </div>
-
                 }
 
             </div>
-
-
-            <!-- MENSAJE SIN RESULTADOS -->
-
-            <div id="sinResultados">
-
-                <i class="bi bi-search"
-                   style="font-size: 40px; color: #ff7a00;"></i>
-
-                <h4 class="mt-3">
-                    No encontramos recetas
-                </h4>
-
-                <p>
-                    Intenta buscar con otro nombre.
-                </p>
-
-            </div>
-
         }
         else
         {
-
             <div class="empty-card">
 
                 <div class="empty-icon">
-
-                    <i class="bi bi-journal-plus"></i>
-
+                    <i class="bi bi-basket"></i>
                 </div>
-
+                
                 <h3>
-                    Aún no tienes recetas
+                    Aún no tienes ingredientes
                 </h3>
 
                 <p class="text-muted">
-
-                    Comienza creando tu primera receta
-                    y aparecerá aquí.
-
+                    Agrega tus ingredientes para comenzar a organizar tus recetas.
                 </p>
 
                 <a asp-controller="Home"
-                   asp-action="CrearReceta"
+                   asp-action="CrearIngrediente"
                    class="btn-create mt-3">
 
                     <i class="bi bi-plus-circle"></i>
-                    Crear mi primera receta
+                    Agregar mi primer ingrediente
 
                 </a>
 
             </div>
-
         }
 
     </div>
 
-
-    <!-- MODAL CONFIRMAR ELIMINACIÓN -->
+    <!-- MODAL ELIMINAR INGREDIENTE -->
 
     <div class="modal fade"
          id="modalEliminar"
@@ -585,47 +432,37 @@
                     </div>
 
                     <h4 class="fw-bold">
-                        ¿Eliminar receta?
+                        ¿Eliminar ingrediente?
                     </h4>
 
                     <p class="text-muted">
-
-                        ¿Estás seguro de que deseas eliminar esta receta?
-
+                        ¿Estás seguro de que deseas eliminar este ingrediente?
                         <br />
-
                         Esta acción no se puede deshacer.
-
                     </p>
 
-
-                    <form id="formEliminar"
-                          asp-controller="Home"
-                          asp-action="EliminarReceta"
+                    <form asp-controller="Home"
+                          asp-action="EliminarIngrediente"
                           method="post">
 
                         @Html.AntiForgeryToken()
 
                         <input type="hidden"
-                               id="recetaIdEliminar"
+                               id="ingredienteIdEliminar"
                                name="id" />
-
 
                         <div class="d-flex gap-2 justify-content-center mt-4">
 
                             <button type="button"
                                     class="btn btn-light"
-                                    data-bs-dismiss="modal"
-                                    style="border-radius: 10px; padding: 10px 20px;">
+                                    data-bs-dismiss="modal">
 
                                 Cancelar
 
                             </button>
 
-
                             <button type="submit"
-                                    class="btn btn-danger"
-                                    style="border-radius: 10px; padding: 10px 20px;">
+                                    class="btn btn-danger">
 
                                 <i class="bi bi-trash"></i>
                                 Sí, eliminar
@@ -644,13 +481,7 @@
 
     </div>
 
-
-    <!-- JAVASCRIPT BOOTSTRAP -->
-
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-
-
-    <!-- JAVASCRIPT ELIMINAR -->
 
     <script>
 
@@ -658,9 +489,9 @@
 
                 boton.addEventListener('click', function() {
 
-                    const recetaId = this.getAttribute('data-id');
+                    const ingredienteId = this.getAttribute('data-id');
 
-                    document.getElementById('recetaIdEliminar').value = recetaId;
+                    document.getElementById('ingredienteIdEliminar').value = ingredienteId;
 
                     const modal = new bootstrap.Modal(
                         document.getElementById('modalEliminar')
@@ -671,64 +502,6 @@
                 });
 
             });
-
-    </script>
-
-
-    <!-- JAVASCRIPT BUSCADOR -->
-
-    <script>
-
-            const buscador = document.getElementById('buscadorRecetas');
-
-            if (buscador) {
-
-                buscador.addEventListener('input', function() {
-
-                    const texto = this.value.toLowerCase().trim();
-
-                    const recetas = document.querySelectorAll('.receta-item');
-
-                    let resultados = 0;
-
-                    recetas.forEach(function(receta) {
-
-                        const nombre = receta.getAttribute('data-nombre');
-
-                        if (nombre.includes(texto)) {
-
-                            receta.style.display = '';
-
-                            resultados++;
-
-                        } else {
-
-                            receta.style.display = 'none';
-
-                        }
-
-                    });
-
-
-                    const sinResultados = document.getElementById('sinResultados');
-
-                    if (sinResultados) {
-
-                        if (resultados === 0 && texto !== '') {
-
-                            sinResultados.style.display = 'block';
-
-                        } else {
-
-                            sinResultados.style.display = 'none';
-
-                        }
-
-                    }
-
-                });
-
-            }
 
     </script>
 

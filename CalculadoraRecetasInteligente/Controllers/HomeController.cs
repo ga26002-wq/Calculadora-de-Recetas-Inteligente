@@ -30,6 +30,130 @@ namespace CalculadoraRecetasInteligente.Controllers
             return View(recetas);
         }
 
+        public async Task<IActionResult> Ingredientes()
+        {
+            var ingredientes = await _context.Ingredientes
+                .OrderBy(i => i.Nombre)
+                .ToListAsync();
+
+            return View(ingredientes);
+        }
+
+
+
+        // MOSTRAR FORMULARIO PARA CREAR INGREDIENTE
+        [HttpGet]
+        public IActionResult CrearIngrediente()
+        {
+            return View();
+        }
+
+
+        // GUARDAR INGREDIENTE
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> CrearIngrediente(CrearIngredienteViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            var ingrediente = new Ingrediente
+            {
+                Nombre = model.Nombre,
+                Cantidad = model.Cantidad,
+                UnidadMedida = model.UnidadMedida
+            };
+
+            _context.Ingredientes.Add(ingrediente);
+
+            await _context.SaveChangesAsync();
+
+            TempData["MensajeExito"] =
+                "¡Ingrediente agregado correctamente!";
+
+            return RedirectToAction(nameof(Ingredientes));
+        }
+
+        
+        // MOSTRAR FORMULARIO PARA EDITAR INGREDIENTE
+
+        [HttpGet]
+        public async Task<IActionResult> EditarIngrediente(int id)
+        {
+            var ingrediente = await _context.Ingredientes
+                .FirstOrDefaultAsync(i => i.IngredienteId == id);
+
+            if (ingrediente == null)
+            {
+                return NotFound();
+            }
+
+            var model = new EditarIngredienteViewModel
+            {
+                IngredienteId = ingrediente.IngredienteId,
+                Nombre = ingrediente.Nombre,
+                Cantidad = ingrediente.Cantidad,
+                UnidadMedida = ingrediente.UnidadMedida
+            };
+
+            return View(model);
+        }
+
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> EditarIngrediente(
+            EditarIngredienteViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            var ingrediente = await _context.Ingredientes
+                .FirstOrDefaultAsync(i => i.IngredienteId == model.IngredienteId);
+
+            if (ingrediente == null)
+            {
+                return NotFound();
+            }
+
+            ingrediente.Nombre = model.Nombre;
+            ingrediente.Cantidad = model.Cantidad;
+            ingrediente.UnidadMedida = model.UnidadMedida;
+
+            await _context.SaveChangesAsync();
+
+            TempData["MensajeExito"] =
+                "¡Ingrediente actualizado correctamente!";
+
+            return RedirectToAction(nameof(Ingredientes));
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> EliminarIngrediente(int id)
+        {
+            var ingrediente = await _context.Ingredientes
+                .FirstOrDefaultAsync(i => i.IngredienteId == id);
+
+            if (ingrediente == null)
+            {
+                return NotFound();
+            }
+
+            _context.Ingredientes.Remove(ingrediente);
+
+            await _context.SaveChangesAsync();
+
+            TempData["MensajeExito"] =
+                "¡Ingrediente eliminado correctamente!";
+
+            return RedirectToAction(nameof(Ingredientes));
+        }
+
         public async Task<IActionResult> VerReceta(int id)
         {
             var receta = await _context.Recetas
