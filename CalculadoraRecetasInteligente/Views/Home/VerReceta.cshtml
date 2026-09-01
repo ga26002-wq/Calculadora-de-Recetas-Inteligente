@@ -169,6 +169,34 @@
                 color: #2f3b4c;
             }
 
+            /* INGREDIENTES */
+
+            .ingredient-card {
+                background-color: #fafafa;
+                border-radius: 15px;
+                padding: 18px 20px;
+                height: 100%;
+                border-left: 5px solid #ff7a00;
+            }
+
+            .ingredient-name {
+                font-size: 18px;
+                font-weight: bold;
+                color: #2f3b4c;
+            }
+
+            .ingredient-quantity {
+                color: #777;
+                margin-top: 5px;
+            }
+
+            .ingredients-title {
+                color: #2f3b4c;
+                font-weight: bold;
+            }
+
+            /* BOTONES */
+
             .btn-back {
                 background-color: #ff7a00;
                 color: white;
@@ -244,7 +272,6 @@
            class="menu-item">
 
             <i class="bi bi-house-door-fill"></i>
-
             Dashboard
 
         </a>
@@ -254,45 +281,44 @@
            class="menu-item active">
 
             <i class="bi bi-journal-text"></i>
-
             Mis Recetas
 
         </a>
 
-        <a href="#"
+        <a asp-controller="Home"
+           asp-action="Ingredientes"
            class="menu-item">
 
             <i class="bi bi-basket"></i>
-
             Ingredientes
 
         </a>
 
-        <a href="#"
+        <a asp-controller="Home"
+           asp-action="AjusteInteligente"
            class="menu-item">
 
             <i class="bi bi-stars"></i>
-
             Ajuste Inteligente
 
         </a>
 
-        <a href="#"
+        <a asp-controller="Home"
+           asp-action="MiPerfil"
            class="menu-item">
 
             <i class="bi bi-person"></i>
-
             Mi Perfil
-
+            
         </a>
 
         <div class="logout">
 
-            <a href="#"
+            <a asp-controller="Home"
+               asp-action="CerrarSesion"
                class="menu-item">
 
                 <i class="bi bi-box-arrow-right"></i>
-
                 Cerrar sesión
 
             </a>
@@ -327,7 +353,6 @@
                class="btn-back">
 
                 <i class="bi bi-arrow-left"></i>
-
                 Volver a mis recetas
 
             </a>
@@ -357,6 +382,8 @@
 
             </p>
 
+
+            <!-- INFORMACIÓN -->
 
             <div class="row g-4 mt-4">
 
@@ -425,8 +452,82 @@
             </div>
 
 
+            <!-- INGREDIENTES -->
+
             <hr class="my-5" />
 
+            <div class="d-flex justify-content-between align-items-center mb-4">
+
+                <h3 class="ingredients-title mb-0">
+
+                    <i class="bi bi-basket"></i>
+                    Ingredientes
+
+                </h3>
+
+                <a asp-controller="Home"
+                   asp-action="AgregarIngredienteReceta"
+                   asp-route-recetaId="@Model.RecetaId"
+                   class="btn-back">
+
+                    <i class="bi bi-plus-circle"></i>
+                    Agregar ingrediente
+
+                </a>
+
+            </div>
+
+
+            @if (Model.Ingredientes != null && Model.Ingredientes.Any())
+            {
+                <div class="row g-3">
+
+                    @foreach (var ingrediente in Model.Ingredientes)
+                    {
+                        <div class="col-md-6">
+
+                            <div class="ingredient-card">
+
+                                <div class="ingredient-name">
+
+                                    <i class="bi bi-box-seam"></i>
+
+                                    @ingrediente.Nombre
+
+                                </div>
+
+                                <div class="ingredient-quantity">
+
+                                    Cantidad:
+                                    <strong>
+                                        @ingrediente.Cantidad
+                                        @ingrediente.UnidadMedida
+                                    </strong>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+                    }
+
+                </div>
+            }
+            else
+            {
+                <div class="alert alert-light border">
+
+                    <i class="bi bi-info-circle"></i>
+
+                    Esta receta todavía no tiene ingredientes.
+
+                </div>
+            }
+
+
+            <!-- FECHAS -->
+
+            <hr class="my-5" />
 
             <div class="row">
 
@@ -459,19 +560,21 @@
                 </div>
 
             </div>
-            
 
-            <div class="mt-4">
+
+            <!-- BOTONES -->
+
+            <div class="mt-4 d-flex flex-wrap gap-3">
 
                 <a asp-controller="Home"
                    asp-action="MisRecetas"
                    class="btn-back">
 
                     <i class="bi bi-arrow-left"></i>
-
                     Volver a mis recetas
 
                 </a>
+
 
                 <a asp-controller="Home"
                    asp-action="EditarReceta"
@@ -479,9 +582,19 @@
                    class="btn-back">
 
                     <i class="bi bi-pencil-square"></i>
-
                     Editar receta
-                    
+
+                </a>
+
+
+                <a asp-controller="Home"
+                   asp-action="AgregarIngredienteReceta"
+                   asp-route-recetaId="@Model.RecetaId"
+                   class="btn-back">
+
+                    <i class="bi bi-plus-circle"></i>
+                    Agregar ingrediente
+
                 </a>
 
             </div>

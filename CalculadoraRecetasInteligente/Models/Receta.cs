@@ -35,5 +35,8 @@ namespace CalculadoraRecetasInteligente.Models
 
         [Column("fecha_actualizacion")]
         public DateTime? FechaActualizacion { get; set; }
+
+        public ICollection<Ingrediente> Ingredientes { get; set; }
+    = new List<Ingrediente>();
     }
 }

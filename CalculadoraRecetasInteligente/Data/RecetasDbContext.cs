@@ -22,9 +22,25 @@ namespace CalculadoraRecetasInteligente.Data
         {
             base.OnModelCreating(modelBuilder);
 
+            // CONFIGURACIÓN DE RECETA
+            // Evita el error del OUTPUT cuando la tabla tiene triggers
+            modelBuilder.Entity<Receta>()
+                .ToTable("Recetas", "recetas", tb =>
+                {
+                    tb.UseSqlOutputClause(false);
+                });
+
+            // CONFIGURACIÓN DE INGREDIENTE
             modelBuilder.Entity<Ingrediente>()
                 .Property(i => i.Cantidad)
                 .HasPrecision(10, 2);
+
+            // RELACIÓN RECETA - INGREDIENTES
+            modelBuilder.Entity<Ingrediente>()
+                .HasOne(i => i.Receta)
+                .WithMany(r => r.Ingredientes)
+                .HasForeignKey(i => i.RecetaId)
+                .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

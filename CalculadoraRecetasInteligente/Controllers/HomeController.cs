@@ -39,6 +39,69 @@ namespace CalculadoraRecetasInteligente.Controllers
             return View(ingredientes);
         }
 
+        // MOSTRAR AJUSTE INTELIGENTE
+        [HttpGet]
+        public async Task<IActionResult> AjusteInteligente()
+        {
+            var recetas = await _context.Recetas
+                .OrderBy(r => r.Nombre)
+                .ToListAsync();
+
+            ViewBag.Recetas = recetas;
+
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> AjustarReceta(
+    int recetaId,
+    int nuevasPorciones)
+        {
+            var receta = await _context.Recetas
+                .FirstOrDefaultAsync(r => r.RecetaId == recetaId);
+
+            if (receta == null)
+            {
+                return NotFound();
+            }
+
+            if (nuevasPorciones <= 0)
+            {
+                TempData["MensajeError"] =
+                    "Las porciones deben ser mayores que cero.";
+
+                return RedirectToAction(nameof(AjusteInteligente));
+            }
+
+            var ingredientes = await _context.Ingredientes
+                .Where(i => i.RecetaId == recetaId)
+                .OrderBy(i => i.Nombre)
+                .ToListAsync();
+
+            decimal factor = (decimal)nuevasPorciones / receta.Porciones;
+
+            var resultado = new ResultadoAjusteViewModel
+            {
+                NombreReceta = receta.Nombre,
+                PorcionesOriginales = receta.Porciones,
+                NuevasPorciones = nuevasPorciones
+            };
+
+            foreach (var ingrediente in ingredientes)
+            {
+                resultado.Ingredientes.Add(new IngredienteAjustadoViewModel
+                {
+                    Nombre = ingrediente.Nombre,
+                    CantidadOriginal = ingrediente.Cantidad,
+                    NuevaCantidad = ingrediente.Cantidad * factor,
+                    UnidadMedida = ingrediente.UnidadMedida
+                });
+            }
+
+            return View("ResultadoAjuste", resultado);
+        }
+
 
 
         // MOSTRAR FORMULARIO PARA CREAR INGREDIENTE
@@ -154,9 +217,76 @@ namespace CalculadoraRecetasInteligente.Controllers
             return RedirectToAction(nameof(Ingredientes));
         }
 
+        // MOSTRAR FORMULARIO PARA AGREGAR INGREDIENTE A UNA RECETA
+        [HttpGet]
+        public async Task<IActionResult> AgregarIngredienteReceta(int recetaId)
+        {
+            var receta = await _context.Recetas
+                .FirstOrDefaultAsync(r => r.RecetaId == recetaId);
+
+            if (receta == null)
+            {
+                return NotFound();
+            }
+
+            ViewBag.NombreReceta = receta.Nombre;
+
+            var model = new CrearIngredienteRecetaViewModel
+            {
+                RecetaId = recetaId
+            };
+
+            return View(model);
+        }
+
+
+        // GUARDAR INGREDIENTE EN LA RECETA
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> AgregarIngredienteReceta(
+    CrearIngredienteRecetaViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                var recetaError = await _context.Recetas
+                    .FirstOrDefaultAsync(r => r.RecetaId == model.RecetaId);
+
+                ViewBag.NombreReceta = recetaError?.Nombre;
+
+                return View(model);
+            }
+
+            var receta = await _context.Recetas
+                .FirstOrDefaultAsync(r => r.RecetaId == model.RecetaId);
+
+            if (receta == null)
+            {
+                return NotFound();
+            }
+
+            var ingrediente = new Ingrediente
+            {
+                Nombre = model.Nombre,
+                Cantidad = model.Cantidad,
+                UnidadMedida = model.UnidadMedida,
+                RecetaId = model.RecetaId
+            };
+
+            _context.Ingredientes.Add(ingrediente);
+
+            await _context.SaveChangesAsync();
+
+            TempData["MensajeExito"] =
+                "¡Ingrediente agregado correctamente!";
+
+            return RedirectToAction(
+                nameof(VerReceta),
+                new { id = model.RecetaId });
+        }
         public async Task<IActionResult> VerReceta(int id)
         {
             var receta = await _context.Recetas
+                .Include(r => r.Ingredientes)
                 .FirstOrDefaultAsync(r => r.RecetaId == id);
 
             if (receta == null)
