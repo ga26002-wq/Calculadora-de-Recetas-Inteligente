@@ -16,8 +16,19 @@ namespace CalculadoraRecetasInteligente.Controllers
             _context = context;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
+            var totalRecetas = await _context.Recetas.CountAsync();
+            var totalIngredientes = await _context.Ingredientes.CountAsync();
+
+            ViewBag.TotalRecetas = totalRecetas;
+            ViewBag.TotalIngredientes = totalIngredientes;
+
+            ViewBag.AjustesRealizados =
+    HttpContext.Session.GetInt32("AjustesRealizados") ?? 0;
+
+            ViewBag.UsuarioNombre = HttpContext.Session.GetString("UsuarioNombre") ?? "Chef";
+
             return View();
         }
 
@@ -98,6 +109,13 @@ namespace CalculadoraRecetasInteligente.Controllers
                     UnidadMedida = ingrediente.UnidadMedida
                 });
             }
+
+            var ajustesRealizados = HttpContext.Session.GetInt32("AjustesRealizados") ?? 0;
+
+            HttpContext.Session.SetInt32(
+                "AjustesRealizados",
+                ajustesRealizados + 1
+            );
 
             return View("ResultadoAjuste", resultado);
         }

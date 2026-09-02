@@ -314,10 +314,10 @@
         </a>
 
 
-        <a asp-controller="Auth"
-           asp-action="CerrarSesion"
+        <a href="#"
            class="menu-item"
-           onclick="return confirm('¿Estás seguro de que deseas cerrar sesión?');">
+           data-bs-toggle="modal"
+           data-bs-target="#modalCerrarSesion">
 
             <i class="bi bi-box-arrow-right"></i>
 
@@ -414,7 +414,7 @@
                     </small>
 
                     <div class="stat-number">
-                        0
+                        @ViewBag.TotalRecetas
                     </div>
 
                 </div>
@@ -431,7 +431,7 @@
                     </small>
 
                     <div class="stat-number">
-                        0
+                        @ViewBag.TotalIngredientes
                     </div>
 
                 </div>
@@ -448,7 +448,7 @@
                     </small>
 
                     <div class="stat-number">
-                        0
+                        @ViewBag.AjustesRealizados
                     </div>
 
                 </div>
@@ -533,7 +533,8 @@
                     </p>
 
 
-                    <a href="#"
+                    <a asp-controller="Home"
+                       asp-action="Ingredientes"
                        class="btn-feature">
 
                         Ver ingredientes
@@ -571,7 +572,8 @@
                     </p>
 
 
-                    <a href="#"
+                    <a asp-controller="Home"
+                       asp-action="AjusteInteligente"
                        class="btn-feature">
 
                         Usar ChefIA
@@ -609,7 +611,8 @@
                     </p>
 
 
-                    <a href="#"
+                    <a asp-controller="Home"
+                       asp-action="MiPerfil"
                        class="btn-feature">
 
                         Ver perfil
