@@ -18,16 +18,26 @@ namespace CalculadoraRecetasInteligente.Controllers
 
         public async Task<IActionResult> Index()
         {
-            var totalRecetas = await _context.Recetas.CountAsync();
-            var totalIngredientes = await _context.Ingredientes.CountAsync();
+            var usuarioId = HttpContext.Session.GetInt32("UsuarioId");
 
-            ViewBag.TotalRecetas = totalRecetas;
-            ViewBag.TotalIngredientes = totalIngredientes;
+            if (!usuarioId.HasValue)
+            {
+                return RedirectToAction("Login", "Auth");
+            }
 
-            ViewBag.AjustesRealizados =
-    HttpContext.Session.GetInt32("AjustesRealizados") ?? 0;
+            var usuario = await _context.Usuarios
+                .FirstOrDefaultAsync(u => u.UsuarioId == usuarioId.Value);
 
-            ViewBag.UsuarioNombre = HttpContext.Session.GetString("UsuarioNombre") ?? "Chef";
+            ViewBag.UsuarioNombre = usuario?.Nombre ?? "Chef";
+
+            ViewBag.TotalRecetas = await _context.Recetas
+                .CountAsync(r => r.UsuarioId == usuarioId.Value);
+
+            ViewBag.TotalIngredientes = await _context.Ingredientes
+                .CountAsync();
+
+            ViewBag.AjustesRealizados = await _context.AjustesRealizados
+                .CountAsync(a => a.UsuarioId == usuarioId.Value);
 
             return View();
         }
@@ -91,6 +101,24 @@ namespace CalculadoraRecetasInteligente.Controllers
                 .ToListAsync();
 
             decimal factor = (decimal)nuevasPorciones / receta.Porciones;
+
+            var usuarioId = HttpContext.Session.GetInt32("UsuarioId");
+
+            if (usuarioId.HasValue)
+            {
+                var ajuste = new AjusteRealizado
+                {
+                    UsuarioId = usuarioId.Value,
+                    RecetaId = receta.RecetaId,
+                    PorcionesOriginales = receta.Porciones,
+                    NuevasPorciones = nuevasPorciones,
+                    FechaAjuste = DateTime.Now
+                };
+
+                _context.AjustesRealizados.Add(ajuste);
+
+                await _context.SaveChangesAsync();
+            }
 
             var resultado = new ResultadoAjusteViewModel
             {

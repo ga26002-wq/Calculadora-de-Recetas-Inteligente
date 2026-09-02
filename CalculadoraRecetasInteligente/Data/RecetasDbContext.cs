@@ -18,6 +18,8 @@ namespace CalculadoraRecetasInteligente.Data
 
         public DbSet<Ingrediente> Ingredientes { get; set; }
 
+        public DbSet<AjusteRealizado> AjustesRealizados { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
