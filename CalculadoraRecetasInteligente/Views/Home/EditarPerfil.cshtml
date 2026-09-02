@@ -1,7 +1,7 @@
-﻿@model CalculadoraRecetasInteligente.ViewModels.ResultadoAjusteViewModel
+﻿@model CalculadoraRecetasInteligente.ViewModels.EditarPerfilViewModel
 
 @{
-    ViewData["Title"] = "Resultado del Ajuste";
+    ViewData["Title"] = "Editar Perfil";
     Layout = null;
 }
 
@@ -15,7 +15,7 @@
     <meta name="viewport"
           content="width=device-width, initial-scale=1.0" />
 
-    <title>ChefIA - Resultado del Ajuste</title>
+    <title>ChefIA - Editar Perfil</title>
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
           rel="stylesheet" />
@@ -32,8 +32,6 @@
                 background-color: #f5f6fa;
             }
 
-            /* SIDEBAR */
-
             .sidebar {
                 width: 260px;
                 min-height: 100vh;
@@ -43,6 +41,8 @@
                 background: linear-gradient(180deg, #ff7a00, #e65c00);
                 color: white;
                 padding: 25px 20px;
+                display: flex;
+                flex-direction: column;
             }
 
             .logo {
@@ -70,6 +70,7 @@
                 border-radius: 12px;
                 color: white;
                 text-decoration: none;
+                transition: 0.3s;
             }
 
                 .menu-item:hover {
@@ -84,76 +85,101 @@
                 }
 
             .logout {
-                position: absolute;
-                bottom: 30px;
-                left: 20px;
-                right: 20px;
+                margin-top: auto;
             }
-
-            /* CONTENIDO */
 
             .main-content {
                 margin-left: 260px;
                 padding: 35px;
+                max-width: 1500px;
             }
 
             .topbar {
                 background: white;
-                border-radius: 18px;
-                padding: 25px;
+                border-radius: 20px;
+                padding: 25px 30px;
                 margin-bottom: 30px;
                 box-shadow: 0 5px 20px rgba(0,0,0,0.06);
             }
 
-            .result-card {
+                .topbar h2 {
+                    margin: 0;
+                    color: #2f3b4c;
+                    font-weight: bold;
+                }
+
+            .form-card {
                 background: white;
-                border-radius: 18px;
-                padding: 35px;
-                max-width: 900px;
+                border-radius: 22px;
+                padding: 40px;
+                max-width: 850px;
                 box-shadow: 0 5px 20px rgba(0,0,0,0.06);
             }
 
-            .result-icon {
-                width: 70px;
-                height: 70px;
-                border-radius: 18px;
+            .profile-icon {
+                width: 80px;
+                height: 80px;
+                border-radius: 20px;
                 background: #fff0e6;
                 color: #ff7a00;
                 display: flex;
                 align-items: center;
                 justify-content: center;
-                font-size: 32px;
-                margin-bottom: 20px;
+                font-size: 38px;
+                margin-bottom: 25px;
             }
 
-            .ingredient-row {
-                padding: 18px;
-                border-radius: 12px;
-                background: #f8f9fa;
-                margin-bottom: 12px;
-            }
-
-            .new-quantity {
-                font-size: 20px;
+            .form-label {
                 font-weight: bold;
-                color: #ff7a00;
+                color: #2f3b4c;
             }
 
-            .btn-back {
-                background: #ff7a00;
+            .form-control {
+                border-radius: 12px;
+                padding: 13px;
+            }
+
+                .form-control:focus {
+                    border-color: #ff7a00;
+                    box-shadow: 0 0 0 0.2rem rgba(255,122,0,0.15);
+                }
+
+            .btn-save {
+                background-color: #ff7a00;
                 color: white;
                 border: none;
                 border-radius: 10px;
                 padding: 12px 22px;
-                text-decoration: none;
                 font-weight: bold;
-                display: inline-block;
             }
 
-                .btn-back:hover {
-                    background: #e65c00;
+                .btn-save:hover {
+                    background-color: #e65c00;
                     color: white;
                 }
+
+            .btn-cancel {
+                border-radius: 10px;
+                padding: 12px 22px;
+            }
+
+            @@media (max-width: 768px) {
+
+                .sidebar {
+                    position: relative;
+                    width: 100%;
+                    min-height: auto;
+                }
+
+                .main-content {
+                    margin-left: 0;
+                    padding: 20px;
+                }
+
+                .form-card {
+                    padding: 25px;
+                }
+            }
 
     </style>
 
@@ -175,7 +201,6 @@
 
         </div>
 
-
         <a asp-controller="Home"
            asp-action="Index"
            class="menu-item">
@@ -184,7 +209,6 @@
             Dashboard
 
         </a>
-
 
         <a asp-controller="Home"
            asp-action="MisRecetas"
@@ -195,7 +219,6 @@
 
         </a>
 
-
         <a asp-controller="Home"
            asp-action="Ingredientes"
            class="menu-item">
@@ -205,20 +228,18 @@
 
         </a>
 
-
         <a asp-controller="Home"
            asp-action="AjusteInteligente"
-           class="menu-item active">
+           class="menu-item">
 
             <i class="bi bi-stars"></i>
             Ajuste Inteligente
 
         </a>
 
-
         <a asp-controller="Home"
            asp-action="MiPerfil"
-           class="menu-item">
+           class="menu-item active">
 
             <i class="bi bi-person"></i>
             Mi Perfil
@@ -244,93 +265,131 @@
 
         <div class="topbar">
 
-            <h2 class="mb-1">
-                🤖 Resultado del Ajuste Inteligente
-            </h2>
+            <h2>Editar Perfil</h2>
 
-            <p class="text-muted mb-0">
-                ChefIA calculó automáticamente las nuevas cantidades.
-            </p>
+            <small class="text-muted">
+                Actualiza la información de tu cuenta
+            </small>
 
         </div>
 
 
-        <div class="result-card">
+        <div class="form-card">
 
-            <div class="result-icon">
-                <i class="bi bi-stars"></i>
+            <div class="profile-icon">
+
+                <i class="bi bi-person-fill"></i>
+
             </div>
 
-
-            <h3>@Model.NombreReceta</h3>
-
-            <p class="text-muted">
-                Ajustada de
-                <strong>@Model.PorcionesOriginales</strong>
-                a
-                <strong>@Model.NuevasPorciones</strong>
-                porciones.
-            </p>
+            <h3 class="mb-4">
+                Información personal
+            </h3>
 
 
-            <hr />
+            <form asp-controller="Home"
+                  asp-action="EditarPerfil"
+                  method="post">
+
+                @Html.AntiForgeryToken()
+
+                <input asp-for="UsuarioId"
+                       type="hidden" />
 
 
-            <h5 class="mb-4">
-                <i class="bi bi-basket"></i>
-                Nuevas cantidades
-            </h5>
+                <!-- NOMBRE -->
 
+                <div class="mb-3">
 
-            @foreach (var ingrediente in Model.Ingredientes)
-            {
-                <div class="ingredient-row d-flex justify-content-between align-items-center">
+                    <label asp-for="Nombre"
+                           class="form-label">
 
-                    <div>
+                        Nombre
 
-                        <strong>
-                            @ingrediente.Nombre
-                        </strong>
+                    </label>
 
-                        <div class="text-muted">
+                    <input asp-for="Nombre"
+                           class="form-control" />
 
-                            Cantidad original:
-                            @ingrediente.CantidadOriginal
-                            @ingrediente.UnidadMedida
-
-                        </div>
-
-                    </div>
-
-
-                    <div class="new-quantity">
-
-                        @ingrediente.NuevaCantidad
-                        @ingrediente.UnidadMedida
-
-                    </div>
+                    <span asp-validation-for="Nombre"
+                          class="text-danger">
+                    </span>
 
                 </div>
-            }
 
 
-            <div class="mt-4">
+                <!-- APELLIDO -->
 
-                <a asp-controller="Home"
-                   asp-action="AjusteInteligente"
-                   class="btn-back">
+                <div class="mb-3">
 
-                    <i class="bi bi-arrow-left"></i>
+                    <label asp-for="Apellido"
+                           class="form-label">
 
-                    Realizar otro ajuste
+                        Apellido
 
-                </a>
+                    </label>
 
-            </div>
+                    <input asp-for="Apellido"
+                           class="form-control" />
+
+                    <span asp-validation-for="Apellido"
+                          class="text-danger">
+                    </span>
+
+                </div>
+
+
+                <!-- CORREO -->
+
+                <div class="mb-4">
+
+                    <label asp-for="Correo"
+                           class="form-label">
+
+                        Correo electrónico
+
+                    </label>
+
+                    <input asp-for="Correo"
+                           type="email"
+                           class="form-control" />
+
+                    <span asp-validation-for="Correo"
+                          class="text-danger">
+                    </span>
+
+                </div>
+
+
+                <!-- BOTONES -->
+
+                <div class="d-flex gap-2">
+
+                    <button type="submit"
+                            class="btn-save">
+
+                        <i class="bi bi-check-circle me-1"></i>
+
+                        Guardar cambios
+
+                    </button>
+
+                    <a asp-controller="Home"
+                       asp-action="MiPerfil"
+                       class="btn btn-secondary btn-cancel">
+
+                        Cancelar
+
+                    </a>
+
+                </div>
+
+            </form>
 
         </div>
 
     </div>
+
     <!-- MODAL CERRAR SESIÓN -->
 
     <div class="modal fade" id="modalCerrarSesion" tabindex="-1">

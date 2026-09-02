@@ -411,6 +411,93 @@ namespace CalculadoraRecetasInteligente.Controllers
             return RedirectToAction(nameof(MisRecetas));
         }
 
+        // ================================
+        // MI PERFIL
+        // ================================
+
+        [HttpGet]
+        public async Task<IActionResult> MiPerfil()
+        {
+            var usuario = await _context.Usuarios
+                .FirstOrDefaultAsync(u => u.UsuarioId == 1);
+
+            if (usuario == null)
+            {
+                return NotFound();
+            }
+
+            return View(usuario);
+        }
+
+        // MOSTRAR FORMULARIO PARA EDITAR PERFIL
+        [HttpGet]
+        public async Task<IActionResult> EditarPerfil()
+        {
+            var usuario = await _context.Usuarios
+                .FirstOrDefaultAsync(u => u.UsuarioId == 1);
+
+            if (usuario == null)
+            {
+                return NotFound();
+            }
+
+            var model = new EditarPerfilViewModel
+            {
+                UsuarioId = usuario.UsuarioId,
+                Nombre = usuario.Nombre,
+                Apellido = usuario.Apellido,
+                Correo = usuario.Correo
+            };
+
+            return View(model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> EditarPerfil(EditarPerfilViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            var usuario = await _context.Usuarios
+                .FirstOrDefaultAsync(u => u.UsuarioId == model.UsuarioId);
+
+            if (usuario == null)
+            {
+                return NotFound();
+            }
+
+            // VERIFICAR SI EL CORREO YA PERTENECE A OTRO USUARIO
+            var correoExiste = await _context.Usuarios
+                .AnyAsync(u =>
+                    u.Correo == model.Correo &&
+                    u.UsuarioId != model.UsuarioId);
+
+            if (correoExiste)
+            {
+                ModelState.AddModelError(
+                    "Correo",
+                    "Este correo ya está registrado por otro usuario.");
+
+                return View(model);
+            }
+
+            // ACTUALIZAR DATOS
+            usuario.Nombre = model.Nombre;
+            usuario.Apellido = model.Apellido;
+            usuario.Correo = model.Correo;
+
+            await _context.SaveChangesAsync();
+
+            TempData["MensajeExito"] =
+                "¡Perfil actualizado correctamente!";
+
+            return RedirectToAction(nameof(MiPerfil));
+        }
+
+
         public IActionResult Privacy()
         {
             return View();

@@ -105,5 +105,12 @@ namespace CalculadoraRecetasInteligente.Controllers
 
             return RedirectToAction("Login");
         }
+        // CERRAR SESIÓN
+        public IActionResult CerrarSesion()
+        {
+            HttpContext.Session.Clear();
+
+            return RedirectToAction("Login", "Auth");
+        }
     }
 }
